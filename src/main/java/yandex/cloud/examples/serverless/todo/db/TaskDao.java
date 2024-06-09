@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class TaskDao implements Dao<Task> {
 
-    private final EntityManager entityManager = new EntityManager(System.getenv("DATABASE"), System.getenv("ENDPOINT"));
+    private final EntityManager entityManager = new EntityManager(System.getenv("DATABASE"), System.getenv("ENDPOINT"), System.getenv("IAM"));
 
     @Override
     public List<Task> findAll() {
