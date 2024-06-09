@@ -11,8 +11,6 @@ import java.util.Objects;
 
 public class AddTaskServlet extends HttpServlet {
 
-    private final Dao<Task> taskDao = new TaskDao();
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         var name = req.getParameter("name");
@@ -21,7 +19,7 @@ public class AddTaskServlet extends HttpServlet {
         var description = req.getParameter("description");
         Objects.requireNonNull(description, "Parameter 'description' missing");
 
-        taskDao.save(new Task(name, description));
+        new TaskDao().save(new Task(name, description));
     }
 
 }
