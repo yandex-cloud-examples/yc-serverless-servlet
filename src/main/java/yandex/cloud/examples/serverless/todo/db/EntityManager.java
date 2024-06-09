@@ -8,23 +8,25 @@ import com.yandex.ydb.table.query.Params;
 import com.yandex.ydb.table.rpc.grpc.GrpcTableRpc;
 import com.yandex.ydb.table.transaction.TxControl;
 import yandex.cloud.sdk.auth.provider.ComputeEngineCredentialProvider;
+import yandex.cloud.sdk.auth.provider.IamTokenCredentialProvider;
 
 import java.util.function.Consumer;
 
 public class EntityManager {
-    private final String database;
-    private final String endpoint;
+    private final TableClient tableClient;
 
-    public EntityManager(String database, String endpoint) {
-        this.database = database;
-        this.endpoint = endpoint;
+    public EntityManager(String database, String endpoint, String iamToken) {
+        CloudAuthProvider authProvider;
+        if (iamToken == null) {
+            authProvider = CloudAuthProvider.newAuthProvider(ComputeEngineCredentialProvider.builder().build());
+        } else {
+            authProvider = CloudAuthProvider.newAuthProvider(IamTokenCredentialProvider.builder().token(iamToken).build());
+        }
+        var transport = GrpcTransport.forEndpoint(endpoint, database).withAuthProvider(authProvider).withSecureConnection().build();
+        this.tableClient = TableClient.newClient(GrpcTableRpc.useTransport(transport)).build();
     }
 
     public void execute(String query, Params params, Consumer<DataQueryResult> callback) {
-        var authProvider = CloudAuthProvider.newAuthProvider(ComputeEngineCredentialProvider.builder().build());
-        var transport = GrpcTransport.forEndpoint(endpoint, database).withAuthProvider(authProvider).withSecureConnection().build();
-        var tableClient = TableClient.newClient(GrpcTableRpc.useTransport(transport)).build();
-
         var session = tableClient.createSession()
                 .join()
                 .expect("Error: can't create session");
