@@ -7,18 +7,35 @@
     <groupId>yandex.cloud.examples</groupId>
     <artifactId>serverless.todo</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <ydb.sdk.version>2.5.0</ydb.sdk.version>
+        <ydb.yc.version>2.4.0</ydb.yc.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
+                <version>3.13.0</version>
             </plugin>
         </plugins>
     </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>tech.ydb</groupId>
+                <artifactId>ydb-sdk-bom</artifactId>
+                <version>${ydb.sdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <dependency>
@@ -27,19 +44,13 @@
             <version>4.0.1</version>
         </dependency>
         <dependency>
-            <groupId>com.yandex.ydb</groupId>
-            <artifactId>ydb-sdk-core</artifactId>
-            <version>1.7.6</version>
+            <groupId>tech.ydb</groupId>
+            <artifactId>ydb-sdk-query</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yandex.ydb</groupId>
-            <artifactId>ydb-sdk-table</artifactId>
-            <version>1.7.6</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yandex.ydb</groupId>
-            <artifactId>ydb-sdk-auth-iam</artifactId>
-            <version>1.7.6</version>
+            <groupId>tech.ydb.auth</groupId>
+            <artifactId>yc-auth-provider</artifactId>
+            <version>${ydb.yc.version}</version>
         </dependency>
         <dependency>
             <groupId>com.jsoniter</groupId>

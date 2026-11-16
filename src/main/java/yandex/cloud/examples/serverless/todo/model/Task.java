@@ -1,6 +1,6 @@
 package yandex.cloud.examples.serverless.todo.model;
 
-import com.yandex.ydb.table.result.ResultSetReader;
+import tech.ydb.table.result.ResultSetReader;
 
 public class Task {
 
@@ -44,9 +44,9 @@ public class Task {
     }
 
     public static Task fromResultSet(ResultSetReader resultSet) {
-        var taskId = resultSet.getColumn("TaskId").getUtf8();
-        var name = resultSet.getColumn("Name").getUtf8();
-        var description = resultSet.getColumn("Description").getUtf8();
+        var taskId = resultSet.getColumn("TaskId").getText();
+        var name = resultSet.getColumn("Name").getText();
+        var description = resultSet.getColumn("Description").getText();
         return new Task(taskId, name, description);
     }
 
