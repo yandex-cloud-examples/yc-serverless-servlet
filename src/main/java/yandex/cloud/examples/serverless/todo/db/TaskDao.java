@@ -27,10 +27,7 @@ public class TaskDao implements Dao<Task> {
     @Override
     public void save(Task task) {
         entityManager.execute(
-                "DECLARE $taskId AS Utf8;" +
-                        "DECLARE $name AS Utf8;" +
-                        "DECLARE $description AS Utf8;" +
-                        "INSERT INTO Tasks(TaskId, Name, Description, CreatedAt) VALUES ($taskId, $name, $description, CurrentUtcDatetime())",
+                "INSERT INTO Tasks(TaskId, Name, Description, CreatedAt) VALUES ($taskId, $name, $description, CurrentUtcDatetime())",
                 Params.of("$taskId", PrimitiveValue.newText(UUID.randomUUID().toString()),
                         "$name", PrimitiveValue.newText(task.getName()),
                         "$description", PrimitiveValue.newText(task.getDescription()))
@@ -40,8 +37,7 @@ public class TaskDao implements Dao<Task> {
     @Override
     public void deleteById(String taskId) {
         entityManager.execute(
-                "DECLARE $taskId AS Utf8;" +
-                        "DELETE FROM Tasks WHERE TaskId = $taskId",
+                "DELETE FROM Tasks WHERE TaskId = $taskId",
                 Params.of("$taskId", PrimitiveValue.newText(taskId)));
     }
 
