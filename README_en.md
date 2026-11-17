@@ -16,7 +16,7 @@ Then, go to the **Navigation** tab and create the **Tasks** table. You can do th
 
 2. Create a service account in the current directory (to do this, go to the root directory and select **Service Accounts** on the left side of the menu), and then add the `viewer` and `editor` roles to that service account.
 
-3. Create three functions (one for each servlet), upload this project into each of them, set `java11` as the runtime environment and specify the entry point depending on the current servlet. 
+3. Create three functions (one for each servlet), upload this project into each of them, set `java21` as the runtime environment and specify the entry point depending on the current servlet. 
 **Make sure to specify** the service account created at the previous step. For each function, add environment variables as follows:
     * `DATABASE`: Value in the `Database` field of your database (e.g., `/ru-centralx/yyyyyyyyyy/zzzzzzzzzz`).
     * `ENDPOINT`: Value in the `Endpoint` field of your database (e.g.,`ydb.serverless.yandexcloud.net:2135`).
@@ -33,10 +33,10 @@ Then, go to the **Navigation** tab and create the **Tasks** table. You can do th
    ```bash
     yc serverless function version create \
         --function-id=<current ID of the function> \
-        --runtime=java11 \
+        --runtime=java21 \
         --entrypoint=<current entry point> \
         --memory=128mb \
-        --execution-timeout=3s \
+        --execution-timeout=10s \
         --source-path=target.zip \
         --environment="DATABASE=<Database field value>;ENDPOINT=<Endpoint field value>"
     ```
@@ -47,7 +47,7 @@ Then, go to the **Navigation** tab and create the **Tasks** table. You can do th
     
     After that, set these parameters:
       * Entry point: the current entry point (e.g., `yandex.cloud.examples.serverless.todo.AddTaskServlet` for the function associated with this servlet).
-      * Timeout, sec: 3.
+      * Timeout, sec: 10.
       * RAM: 128 MB.
       * Service account: Select the service account created at step 2.
       * Environment variables:
